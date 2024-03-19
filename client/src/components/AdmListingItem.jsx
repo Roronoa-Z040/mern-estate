@@ -1,9 +1,37 @@
 import { Link } from 'react-router-dom';
 import { MdLocationOn } from 'react-icons/md';
 
-export default function ListingItem({ listing }) {
+import { useState } from 'react';
+
+export default function AdmListingItem({ listing }) {
+    
+    
+    const [userListings, setUserListings] = useState([]);
+
+const handleListingDelete = async (listingId) => {
+
+        try {
+          const res = await fetch(`/api/admin/delete/${listingId}`,{
+            method: 'DELETE',
+          });
+          const data = await res.json();
+          if (data.success === false) {
+            console.log(data.message);
+            return;
+          } 
+
+
+          setUserListings((prev)=> prev.filter((listing)=> listing._id !== listingId)); 
+    
+        } catch (error) {
+          console.log(error.message);
+        }
+      };
+
   return (
+    
     <div className='bg-white shadow-md hover:shadow-lg transition-shadow overflow-hidden rounded-lg w-full sm:w-[330px]'>
+        
       <Link to={`/listing/${listing._id}`}>
         <img
           src={
@@ -48,6 +76,11 @@ export default function ListingItem({ listing }) {
           
         </div>
       </Link>
+      <div>
+            <button onClick={()=>handleListingDelete(listing._id)} className='text-red-700 uppercase flex flex-col p-3 rounded-lg my-5 align-center hover:opacity-80'>Delete</button>
+      </div>
+      
     </div>
+    
   );
 }

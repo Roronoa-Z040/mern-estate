@@ -37,7 +37,7 @@ export const signin = async(req, res, next) => {
         next(error);
     }
 
-}
+};
 
 export const google = async (req, res, next) => {
     try {
@@ -75,4 +75,4 @@ export const signOut = (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
